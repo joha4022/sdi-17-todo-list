@@ -1,3 +1,5 @@
+// window.localStorage.getItem();
+window.localStorage.clear();
 // displays current date
 const newDate = new Date();
 
@@ -32,19 +34,26 @@ inputbox.addEventListener('input', (event) => {
 // event listener for submit button and remove default action. When the submit
 // button is pressed, it creates a checkmark box.
 const submitButton = document.querySelector('.submit-button');
-const checkbox = ` <input type="checkbox" class="box" onclick="strike()"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flat_cross_icon.svg/1200px-Flat_cross_icon.svg.png">`;
+const checkbox = ` <input type="checkbox" class="box" onclick="strike()"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Flat_cross_icon.svg/1200px-Flat_cross_icon.svg.png"><img src="https://cdn2.iconfinder.com/data/icons/circular-icons-filled/78/Circular_Folder-512.png">`;
 
 submitButton.addEventListener('click', (event) => {
     if(inputbox.value.length > 0 ) {
         todoList.children[todoList.children.length-1].innerHTML += checkbox;
         todoList.children[todoList.children.length-1].children[0].id = `${todoList.children.length}`;
         todoList.children[todoList.children.length-1].children[1].id = `${todoList.children.length}`;
+        todoList.children[todoList.children.length-1].children[2].id = `${todoList.children.length}`;
         todoList.children[todoList.children.length-1].children[1].addEventListener('click', event => {
             todoList.removeChild(todoList.children[event.target.id-1]);
         });
-        let obj = { test : `${todoList.children[todoList.children.length-1].textContent}` }
+        todoList.children[todoList.children.length-1].children[2].addEventListener('click', event => {
+            document.querySelector('#archive').appendChild(document.createElement('li'));
+        });
+
+        let obj = { [`list-${todoList.children.length-1}`] : `${todoList.children[todoList.children.length-1].textContent}` }
         tasks.push(obj);
+        
         window.localStorage.setItem(`list-${todoList.children.length-1}`, `${todoList.children[todoList.children.length-1].textContent}`);
+        
         inputbox.value = '';
         todoList.appendChild(document.createElement('li'));
         todoList.children[todoList.children.length-1].style.display = 'none';
@@ -58,14 +67,21 @@ inputbox.addEventListener('keypress', (event) => {
         todoList.children[todoList.children.length-1].innerHTML += checkbox;
         todoList.children[todoList.children.length-1].children[0].id = `${todoList.children.length}`;
         todoList.children[todoList.children.length-1].children[1].id = `${todoList.children.length}`;
+        todoList.children[todoList.children.length-1].children[2].id = `${todoList.children.length}`;
         todoList.children[todoList.children.length-1].children[1].addEventListener('click', event => {
             todoList.removeChild(todoList.children[event.target.id-1]);
         });
-        let obj = { test : `${todoList.children[todoList.children.length-1].textContent}` }
+        todoList.children[todoList.children.length-1].children[2].addEventListener('click', event => {
+            document.querySelector('#archive').appendChild(todoList.children[event.target.id-1].textContent);
+        });
+
+        let obj = { [`list-${todoList.children.length-1}`] : `${todoList.children[todoList.children.length-1].textContent}` }
         tasks.push(obj);
-        window.sessionStorage.setItem(`list-${todoList.children.length-1}`, `${todoList.children[todoList.children.length-1].textContent}`);
+        
+        window.localStorage.setItem(`list-${todoList.children.length-1}`, `${todoList.children[todoList.children.length-1].textContent}`);
+        
         inputbox.value = '';
-        todoList.localStorage(document.createElement('li'));
+        todoList.appendChild(document.createElement('li'));
         todoList.children[todoList.children.length-1].style.display = 'none';
         todoList.children[todoList.children.length-1].id = `list-${todoList.children.length}`;
     }
